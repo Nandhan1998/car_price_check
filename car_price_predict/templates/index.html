@@ -1,0 +1,409 @@
+<!-- <!DOCTYPE html>
+<html>
+
+<head>
+    <title>Vehicle Price Predictor</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+            color: green;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🚗 Vehicle Price Predictor</h1>
+    <form action="/predict" method="post">
+        <div class="grid">
+            <div>
+                <label>Make:</label><br>
+                <select name="make">
+                    <option value="1">Alfa-Romero</option>
+                    <option value="2">Audi</option>
+                    <option value="3">BMW</option>
+                    <option value="20">Toyota</option>
+                </select><br><br>
+
+                <label>Fuel Type:</label><br>
+                <select name="fuel-type">
+                    <option value="1">Gas</option>
+                    <option value="2">Diesel</option>
+                </select><br><br>
+
+                <label>Engine Size:</label><br>
+                <input type="number" name="engine-size" value="130" required>
+            </div>
+            <div>
+                <label>Wheel Base:</label><br>
+                <input type="number" step="0.1" name="wheel-base" value="88.6" required><br><br>
+
+                <label>Highway MPG:</label><br>
+                <input type="number" name="highway-mpg" value="27" required><br><br>
+
+                <input type="hidden" name="symboling" value="0">
+                <input type="hidden" name="aspiration" value="1">
+                <input type="hidden" name="num-of-doors" value="4">
+                <input type="hidden" name="body-style" value="3">
+                <input type="hidden" name="drive-wheels" value="1">
+                <input type="hidden" name="engine-location" value="1">
+                <input type="hidden" name="length" value="168.8">
+                <input type="hidden" name="width" value="64.1">
+                <input type="hidden" name="height" value="48.8">
+                <input type="hidden" name="engine-type" value="3">
+                <input type="hidden" name="num-of-cylinders" value="4">
+                <input type="hidden" name="fuel-system" value="1">
+                <input type="hidden" name="bore" value="3.47">
+                <input type="hidden" name="stroke" value="2.68">
+                <input type="hidden" name="compression-ratio" value="9.0">
+            </div>
+        </div>
+        <button type="submit">Predict Price</button>
+    </form>
+
+    {% if prediction_text %}
+    <div class="result">{{ prediction_text }}</div>
+    {% endif %}
+</body>
+
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>AI Vehicle Price Evaluator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4facfe;
+            --secondary: #00f2fe;
+            --bg: #f4f7f6;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            max-width: 1000px;
+            margin: auto;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        p.subtitle {
+            text-align: center;
+            color: #888;
+            margin-bottom: 40px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .section-header {
+            grid-column: 1 / -1;
+            background: #f8f9fa;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-weight: 600;
+            color: #4facfe;
+            border-left: 4px solid #4facfe;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 5px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        button {
+            grid-column: 1 / -1;
+            padding: 18px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(79, 172, 254, 0.3);
+        }
+
+        .result-box {
+            grid-column: 1 / -1;
+            margin-top: 30px;
+            padding: 20px;
+            background: #e3fcef;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid #abecc9;
+        }
+
+        .result-box h2 {
+            color: #2d7a52;
+            margin: 0;
+        }
+
+        @media (max-width: 800px) {
+            .grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>🚗 Vehicle Price Predictor</h1>
+        <p class="subtitle">Complete the technical profile to generate a valuation</p>
+
+        <form action="/predict" method="post">
+            <div class="grid">
+                <div class="section-header">Basic Specifications</div>
+                <div class="form-group">
+                    <label>Make / Brand</label>
+                    <select name="make">
+                        <option value="1">Alfa-Romero</option>
+                        <option value="2">Audi</option>
+                        <option value="3">BMW</option>
+                        <option value="4">Chevrolet</option>
+                        <option value="5">Dodge</option>
+                        <option value="6">Honda</option>
+                        <option value="7">Isuzu</option>
+                        <option value="8">Jaguar</option>
+                        <option value="9">Mazda</option>
+                        <option value="10">Mercedes-Benz</option>
+                        <option value="11">Mercury</option>
+                        <option value="12">Mitsubishi</option>
+                        <option value="13">Nissan</option>
+                        <option value="14">Peugot</option>
+                        <option value="15">Plymouth</option>
+                        <option value="16">Porsche</option>
+                        <option value="17">Renault</option>
+                        <option value="18">Saab</option>
+                        <option value="19">Subaru</option>
+                        <option value="20" selected>Toyota</option>
+                        <option value="21">Volkswagen</option>
+                        <option value="22">Volvo</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Fuel Type</label>
+                    <select name="fuel-type">
+                        <option value="1">Gas</option>
+                        <option value="2">Diesel</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Aspiration</label>
+                    <select name="aspiration">
+                        <option value="1">Standard (Std)</option>
+                        <option value="2">Turbo</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Number of Doors</label>
+                    <select name="num-of-doors">
+                        <option value="2">Two Doors</option>
+                        <option value="4" selected>Four Doors</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Risk Rating (Symboling)</label>
+                    <input type="number" name="symboling" value="0">
+                </div>
+
+                <div class="section-header">Body & Drive Train</div>
+                <div class="form-group">
+                    <label>Body Style</label>
+                    <select name="body-style">
+                        <option value="1">Convertible</option>
+                        <option value="2">Hatchback</option>
+                        <option value="3" selected>Sedan</option>
+                        <option value="4">Wagon</option>
+                        <option value="5">Hardtop</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Drive Wheels</label>
+                    <select name="drive-wheels">
+                        <option value="1">Rear-Wheel Drive (RWD)</option>
+                        <option value="2" selected>Front-Wheel Drive (FWD)</option>
+                        <option value="3">Four-Wheel Drive (4WD)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Engine Location</label>
+                    <select name="engine-location">
+                        <option value="1">Front</option>
+                        <option value="2">Rear</option>
+                    </select>
+                </div>
+
+                <div class="section-header">Engine Performance</div>
+                <div class="form-group">
+                    <label>Engine Type</label>
+                    <select name="engine-type">
+                        <option value="1">DOHC</option>
+                        <option value="2">OHCV</option>
+                        <option value="3" selected>OHC</option>
+                        <option value="4">L</option>
+                        <option value="5">Rotor</option>
+                        <option value="6">OHCF</option>
+                        <option value="7">DOHCV</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Number of Cylinders</label>
+                    <select name="num-of-cylinders">
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                        <option value="4" selected>Four</option>
+                        <option value="5">Five</option>
+                        <option value="6">Six</option>
+                        <option value="8">Eight</option>
+                        <option value="12">Twelve</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Fuel System</label>
+                    <select name="fuel-system">
+                        <option value="1" selected>MPFI</option>
+                        <option value="2">2BBL</option>
+                        <option value="3">MFI</option>
+                        <option value="4">1BBL</option>
+                        <option value="5">SPFI</option>
+                        <option value="6">4BBL</option>
+                        <option value="7">IDI</option>
+                        <option value="8">SPDI</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Engine Size (cc)</label>
+                    <input type="number" name="engine-size" value="110">
+                </div>
+                <div class="form-group">
+                    <label>Compression Ratio</label>
+                    <input type="number" step="0.1" name="compression-ratio" value="9.0">
+                </div>
+                <div class="form-group">
+                    <label>Highway MPG</label>
+                    <input type="number" name="highway-mpg" value="30">
+                </div>
+
+                <div class="section-header">Dimensions & Exterior</div>
+                <div class="form-group">
+                    <label>Wheel Base</label>
+                    <input type="number" step="0.1" name="wheel-base" value="95.0">
+                </div>
+                <div class="form-group">
+                    <label>Length</label>
+                    <input type="number" step="0.1" name="length" value="170.0">
+                </div>
+                <div class="form-group">
+                    <label>Width</label>
+                    <input type="number" step="0.1" name="width" value="65.0">
+                </div>
+                <div class="form-group">
+                    <label>Height</label>
+                    <input type="number" step="0.1" name="height" value="53.0">
+                </div>
+                <div class="form-group">
+                    <label>Bore</label>
+                    <input type="number" step="0.01" name="bore" value="3.30">
+                </div>
+                <div class="form-group">
+                    <label>Stroke</label>
+                    <input type="number" step="0.01" name="stroke" value="3.25">
+                </div>
+
+                <button type="submit">Analyze Market Price</button>
+            </div>
+        </form>
+
+        {% if prediction_text %}
+        <div class="result-box">
+            <h2>{{ prediction_text }}</h2>
+        </div>
+        {% endif %}
+    </div>
+
+</body>
+
+</html>
