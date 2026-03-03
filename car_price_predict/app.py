@@ -3,6 +3,7 @@ import pandas as pd
 import pickle
 import os
 
+
 app = Flask(__name__)
 
 # Load model and columns
